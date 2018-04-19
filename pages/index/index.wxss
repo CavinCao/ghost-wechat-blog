@@ -1,0 +1,29 @@
+
+.container{
+  padding: 0;
+  height: 1500rpx;
+  color: #000;
+}
+.container .feed-item{
+  padding: 30rpx 30rpx 20rpx;
+  margin: 0rpx 0 6rpx 0;
+  background: #ffffff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 5px #eeeeee;
+}
+
+.container .feed-item .tag-body{
+  padding: 10rpx 0 0 0;
+  line-height: 28rpx;
+  color: #5b5b5b;
+}
+.container .feed-item  .tag-actions{
+  padding: 10rpx 0  0;
+  color: #a0acac;
+}
+.container .feed-item  .tag-actions view{
+  display: inline-block;
+  vertical-align: text-bottom;
+  padding: 0 10rpx 0 0;
+}

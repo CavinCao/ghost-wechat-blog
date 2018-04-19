@@ -1,0 +1,35 @@
+<view class="container more">
+  <view class="userinfo">
+    <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+  </view>
+</view>
+
+<view class="zan-panel">
+  <view class="zan-cell zan-cell--access" bindtap="">
+    <view class="zan-cell__bd">最近浏览</view>
+    <view class="zan-cell__ft"></view>
+  </view>
+  <view class="zan-cell zan-cell--access" bindtap="showCopyRight">
+    <view class="zan-cell__hd"></view>
+    <view class="zan-cell__bd">我的收藏</view>
+    <view class="zan-cell__ft"></view>
+  </view>
+</view>
+
+<view class="zan-panel">
+  <view class="zan-cell zan-cell--access" bindtap="">
+    <view class="zan-cell__bd">功能反馈</view>
+    <view class="zan-cell__ft"></view>
+  </view>
+  <view class="zan-cell zan-cell--access" bindtap="showCopyRight">
+    <view class="zan-cell__hd"></view>
+    <view class="zan-cell__bd">联系作者</view>
+    <view class="zan-cell__ft"></view>
+  </view>
+  <view class="zan-cell zan-cell--access" bindtap="showCopyRight">
+    <view class="zan-cell__hd"></view>
+    <view class="zan-cell__bd">关于Bug生活2048</view>
+    <view class="zan-cell__ft"></view>
+  </view>
+</view>

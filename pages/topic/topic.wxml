@@ -1,0 +1,47 @@
+<import src="/dist/tab/index.wxml" />
+<import src="/dist/loadmore/index.wxml" />
+
+<view class="container">
+
+  <view class="zan-tab__bd--fixed">
+    <template is="zan-tab" data="{{ ...navTab, componentId: 'navTab' }}"></template>
+  </view>
+  <scroll-view class="scorll-margin" scroll-y="true" upper-threshold="5" lower-threshold="5" bindscrolltolower="lower" scroll-with-animation="true" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+    <block wx:for="{{posts}}" wx:for-index="idx" data-data="{{item}}">
+
+      <view class="zan-panel zan-panel--without-top-border" >
+        <view class="zan-card">
+          <view class="zan-card__thumb">
+            <image class="zan-card__img" src="{{item.slug}}" data-index="{{idx}}" binderror="errorloadImage" mode="aspectFit"></image>
+          </view>
+          <view class="zan-card__detail" id="{{item.id}}" bindtap="bindItemTap">
+            <view class="zan-card__detail-row " style='height:60px'>
+              <view class="zan-card zan-ellipsis--l2">
+                <text>{{item.title}}</text>
+              </view>
+            </view>
+
+            <view class="zan-card__detail-row zan-c-gray-darker">
+              <view class="zan-card">
+                <view class="zan-icon zan-icon-contact zan-pull-left zan-font-12 zan-margin"> </view>
+                <view class="zan-ellipsis--l2 zan-pull-left zan-font-12 .zan-margin-tag">
+                  玄冰
+                </view>
+
+                <view class="zan-icon zan-icon-clock zan-pull-left zan-font-12 .zan-margin"></view>
+                <view class="zan-ellipsis--l2 zan-pull-left zan-font-12">
+                  <text>{{item.created_at}}</text>
+                </view>
+              </view>
+            </view>
+
+          </view>
+        </view>
+      </view>
+
+    </block>
+    <template is="zan-loadmore" data="{{ loading }}" />
+    <template is="zan-loadmore" data="{{ nodata }}" />
+    <template is="zan-loadmore" data="{{ nomore }}" />
+  </scroll-view>
+</view>

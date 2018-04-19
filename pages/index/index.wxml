@@ -1,0 +1,36 @@
+<!--index.wxml-->
+<scroll-view scroll-y="true" class="container" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower" scroll-with-animation="true"  scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+
+  <block wx:for="{{posts}}" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
+    <view class="feed-item" id="{{item.id}}" bindtap="bindItemTap">
+      <view class="zan-font-16" >
+        <text>{{item.title}}</text>
+      </view>
+      <view style='height:200px;margin-top:10px;text-align: center'>
+        <image style='height:200px;' src="{{defaultImageUrl}}"></image>
+      </view>
+      <view class="zan-font-12 zan-ellipsis--l3" style='margin-top:10px' bindtap="bindItemTap">
+        <text>{{item.custom_excerpt}}</text>
+      </view>
+      <view class="tag-body">
+        <view class="tag-actions" bindtap="bindItemTap">
+          <view class="like">
+            <view class="zan-icon zan-icon-contact zan-pull-left zan-font-12 "> </view>
+            <view class="zan-pull-left zan-font-12 ">
+              玄冰
+            </view>
+          </view>
+          <view class="comments">
+            <view class="zan-icon zan-icon-clock zan-pull-left zan-font-12 "></view>
+            <view class="zan-pull-left zan-font-12">
+              <text>{{item.created_at}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <template is="zan-loadmore" data="{{ loading }}" />
+  <template is="zan-loadmore" data="{{ nodata }}" />
+  <template is="zan-loadmore" data="{{ nomore }}" />
+</scroll-view>
