@@ -14,18 +14,28 @@ Page({
     loading: false,
     nodata: false,
     nomore: false,
+    lowerComplete: true,
     defaultImageUrl: getApp().globalData.defaultImageUrl + getApp().globalData.imageStyle600To300
   },
   onLoad: function () {
     console.log('onLoad')
     var that = this
-    //调用应用实例的方法获取全局数据
     this.getData();
   },
   lower: function () {
     let that = this;
-    if (!that.data.nomore) {
+    if (!that.data.lowerComplete) {
+      return;
+    }
+    if (!that.data.nomore &&!that.data.nodata) {
+      that.setData({
+        loading: true,
+        lowerComplete: false
+      });
       that.getData();
+      that.setData({
+        lowerComplete: true
+      });
     }
     console.log("lower")
   },
@@ -36,6 +46,17 @@ Page({
       url: '../detail/detail?blogId=' + blogId
     })
   },
+  //图片加载失败给到默认图片
+  errorloadImage: function (e) {
+    if (e.type == "error") {
+      var index = e.target.dataset.index
+      var posts = this.data.posts
+      posts[index].slug = this.data.defaultImageUrl
+      this.setData({
+        posts: posts
+      })
+    }
+  },
   getData: function () {
     let that = this;
     let page = that.data.page;
@@ -43,7 +64,7 @@ Page({
       query: {
         limit: 10,
         page: page + 1,
-        fields: 'id,title,custom_excerpt,created_at'
+        fields: 'id,title,custom_excerpt,created_at,slug'
       },
       success: (res) => {
         if (res.data.meta.pagination.next == null) {
@@ -56,10 +77,12 @@ Page({
         for (var post of posts) {
           var time = util.formatTime(post.created_at);
           post.created_at = time;
+          post.slug = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle600To300;
         }
         this.setData({
           posts: this.data.posts.concat(posts),
           page: res.data.meta.pagination.page,
+          loading:false
         });
       },
     });

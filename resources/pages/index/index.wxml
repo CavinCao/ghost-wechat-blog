@@ -1,15 +1,17 @@
 <!--index.wxml-->
-<scroll-view scroll-y="true" class="container" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower" scroll-with-animation="true"  scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+<import src="/dist/loadmore/index.wxml" />
 
-  <block wx:for="{{posts}}" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
+<scroll-view scroll-y="true" class="container"  bindscrolltolower="lower" enable-back-to-top="true"  scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+
+  <block wx:for="{{posts}}" wx:key="idx" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
     <view class="feed-item" id="{{item.id}}" bindtap="bindItemTap">
       <view class="zan-font-16" >
         <text>{{item.title}}</text>
       </view>
-      <view style='height:200px;margin-top:10px;text-align: center'>
-        <image style='height:200px;' src="{{defaultImageUrl}}"></image>
+      <view style='margin-top:10px;text-align: center'>
+        <image mode="widthFix" style="width: 100%;"  data-index="{{idx}}" binderror="errorloadImage" src="{{item.slug}}"></image>
       </view>
-      <view class="zan-font-12 zan-ellipsis--l3" style='margin-top:10px' bindtap="bindItemTap">
+      <view class="zan-font-12 zan-ellipsis--l3" bindtap="bindItemTap">
         <text>{{item.custom_excerpt}}</text>
       </view>
       <view class="tag-body">

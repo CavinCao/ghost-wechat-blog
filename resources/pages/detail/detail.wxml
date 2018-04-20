@@ -1,0 +1,28 @@
+<import src="../../wxParse/wxParse.wxml" />
+<view class="feed-item" id="{{post.id}}">
+  <view class="zan-font-16">
+    <text>{{post.title}}</text>
+  </view>
+  <view style='margin-top:10px;text-align: center'>
+    <image mode="widthFix" style="width: 100%;" binderror="errorloadImage" src="{{post.slug}}"></image>
+  </view>
+  <view class="tag-body">
+    <view class="tag-actions" bindtap="bindItemTap">
+      <view class="like">
+        <view class="zan-icon zan-icon-contact zan-pull-left zan-font-12 "> </view>
+        <view class="zan-pull-left zan-font-12 ">
+          玄冰
+        </view>
+      </view>
+      <view class="comments">
+        <view class="zan-icon zan-icon-clock zan-pull-left zan-font-12 "></view>
+        <view class="zan-pull-left zan-font-12">
+          <text>{{post.created_at}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="wxParse">
+  <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+</view>

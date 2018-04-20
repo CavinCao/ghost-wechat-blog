@@ -1,9 +1,9 @@
 /**
   待解决：
   1. Ghost API tag筛选后，fields无法使用，返回的结果集有点多，影响效率
-  2. 目前图片是写死的，需要结合七牛云做替换
+  2. [完成]目前图片是写死的，需要结合七牛云做替换
   3. 作者目前没有很好的办法获取，暂时写死
-  4. 下拉，暂无数据，数据加载等动画交互需要实现
+  4. [完成]下拉，暂无数据，数据加载等动画交互需要实现
   5. api获取数据失败校验和处理
  **/
 
@@ -42,6 +42,8 @@ Page(extend({}, Tab, {
     loading: false,
     nodata: false,
     nomore: false,
+    scrollTop:0,
+    lowerComplete:true,
     defaultImageUrl: getApp().globalData.defaultImageUrl + getApp().globalData.imageStyle200To200
   },
   handleZanTabChange(e) {
@@ -50,6 +52,8 @@ Page(extend({}, Tab, {
     this.setData({
       page: 0,
       nomore: false,
+      nodata: false,
+      scrollTop:0,
       [`${componentId}.selectedId`]: selectedId
     });
     this.getData(0);
@@ -58,14 +62,21 @@ Page(extend({}, Tab, {
     console.log('onLoad')
     this.getData(0);
   },
-  upper: function () {
-    //TODO: 滚动至顶部时自动刷新
-
-  },
   lower: function () {
     let that = this;
-    if (!that.data.nomore) {
+    if (!that.data.lowerComplete)
+    {
+      return;
+    }
+    if (!that.data.nomore && !that.data.nodata) {
+      that.setData({
+        loading: true,
+        lowerComplete:false
+      });
       that.getData(1);
+      that.setData({
+        lowerComplete: true
+      });
     }
     console.log("lower")
   },
@@ -79,9 +90,9 @@ Page(extend({}, Tab, {
   //图片加载失败给到默认图片
   errorloadImage: function (e) {
     if (e.type == "error") {
-      var index = e.target.dataset.index 
-      var posts = this.data.posts 　　　　　　　
-      posts[index].slug = this.data.defaultImageUrl 
+      var index = e.target.dataset.index
+      var posts = this.data.posts
+      posts[index].slug = this.data.defaultImageUrl
       this.setData({
         posts: posts
       })
@@ -123,6 +134,7 @@ Page(extend({}, Tab, {
         filter: filter
       },
       success: (res) => {
+        console.log(res);
         if (res.data.meta.pagination.next == null) {
           that.setData({
             nomore: true
@@ -130,17 +142,29 @@ Page(extend({}, Tab, {
         }
 
         const posts = res.data.posts;
-        for (var post of posts) {
-          var time = util.formatTime(post.created_at);
-          post.created_at = time;
-          post.slug = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle200To200;
-          console.log(post.slug)
+        if (posts.length == 0 && index == 0) {
+          this.setData({
+            posts: index == 1 ? this.data.posts.concat(posts) : posts,
+            page: res.data.meta.pagination.page,
+            loading: false,
+            nomore:false,
+            nodata:true
+          });
         }
-        this.setData({
-          posts: index == 1 ? this.data.posts.concat(posts) : posts,
-          page: res.data.meta.pagination.page,
-        });
-      },
+        else {
+          for (var post of posts) {
+            var time = util.formatTime(post.created_at);
+            post.created_at = time;
+            post.slug = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle200To200;
+            console.log(post.slug)
+          }
+          this.setData({
+            posts: index == 1 ? this.data.posts.concat(posts) : posts,
+            page: res.data.meta.pagination.page,
+            loading: false
+          });
+        }
+      }
     });
   }
 }));

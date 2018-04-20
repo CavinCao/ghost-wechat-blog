@@ -6,7 +6,7 @@
   <view class="zan-tab__bd--fixed">
     <template is="zan-tab" data="{{ ...navTab, componentId: 'navTab' }}"></template>
   </view>
-  <scroll-view class="scorll-margin" scroll-y="true" upper-threshold="5" lower-threshold="5" bindscrolltolower="lower" scroll-with-animation="true" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <scroll-view class="scorll-margin" scroll-y="true" lower-threshold="5" bindscrolltolower="lower" scroll-with-animation="true" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
     <block wx:for="{{posts}}" wx:for-index="idx" data-data="{{item}}">
 
       <view class="zan-panel zan-panel--without-top-border" >

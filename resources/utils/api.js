@@ -41,7 +41,6 @@ const getBlogByTag = (params) => {
   wxRequest(params, `${apiURL}/posts?page=${params.query.page}&limit=${params.query.limit}&client_id=${clientId}&client_secret=${clientSecret}&filter=${params.query.filter}`);
 };
 
-
 module.exports = {
   getBlogList,
   getBlogById,
