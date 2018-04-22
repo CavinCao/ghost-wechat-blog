@@ -1,10 +1,13 @@
 <import src="../../wxParse/wxParse.wxml" />
+<import src="/dist/dialog/index.wxml" />
+<import src="/dist/toast/index.wxml" />
+
 <view class="feed-item" id="{{post.id}}">
   <view class="zan-font-16">
     <text>{{post.title}}</text>
   </view>
-  <view style='margin-top:10px;text-align: center'>
-    <image mode="widthFix" style="width: 100%;" binderror="errorloadImage" src="{{post.slug}}"></image>
+  <view class='tag-title'>
+    <image mode="widthFix" binderror="errorloadImage" src="{{post.slug}}"></image>
   </view>
   <view class="tag-body">
     <view class="tag-actions" bindtap="bindItemTap">
@@ -23,6 +26,36 @@
     </view>
   </view>
 </view>
-<view class="wxParse">
+<view class="wxParse" style='margin-bottom:100px'>
   <template is="wxParse" data="{{wxParseData:article.nodes}}" />
 </view>
+
+<view class="zan-panel detail-tab">
+  <view class="zan-col zan-col-6 item-body" bindtap="navigateBack">
+    <button class="btn">
+      <image class='iconimage' src="/images/icon/left.png"></image>
+      <view class='zan-font-12 zan-c-gray-dark'>返回</view>
+    </button>
+  </view>
+  <view class="zan-col zan-col-6 item-body" bindtap="collection">
+    <button class="btn">
+      <image class='iconimage' src="{{collected?'/images/icon/collected.png':'/images/icon/collect.png'}}"></image>
+      <view class='zan-font-12 zan-c-gray-dark'>收藏</view>
+    </button>
+  </view>
+  <view class="zan-col zan-col-6 item-body" bindtap="reward">
+    <button class="btn">
+      <image class='iconimage' src="/images/icon/money.png"></image>
+      <view class='zan-font-12 zan-c-gray-dark'>打赏</view>
+    </button>
+  </view>
+  <view class="zan-col zan-col-6 item-body">
+    <button class="btn" open-type="share">
+      <image class='iconimage' src="/images/icon/share.png"></image>
+      <view class='zan-font-12 zan-c-gray-dark'>分享</view>
+    </button>
+  </view>
+</view>
+
+<template is="zan-dialog" data="{{ zanDialog }}"></template>
+<template is="zan-toast" data="{{ zanToast }}"></template>
