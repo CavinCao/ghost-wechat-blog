@@ -11,6 +11,7 @@ const Zan = require('../../dist/index');
 const WxParse = require('../../wxParse/wxParse.js');
 const util = require('../../utils/util.js');
 const api = require('../../utils/api.js');
+const app = getApp();
 
 Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
 
@@ -19,6 +20,9 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
    */
   data: {
     post: {},
+    author:"",
+    iconContact:"",
+    iconColock:"",
     defaultImageUrl: getApp().globalData.defaultImageUrl + getApp().globalData.imageStyle600To300
   },
 
@@ -26,23 +30,34 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that=this;
+    let that = this;
     let blogId = options.blogId;
-    that.getData(blogId);   
-
-    //收藏状态
-    var postsCollected = wx.getStorageSync('posts_Collected');
-    if (postsCollected) {
-      var isCollected = postsCollected[blogId];
-      this.setData({
-        collected: isCollected
-      })
-    }
-    else {
-      var postsCollected = {}
-      postsCollected[blogId] = false;
-      wx.setStorageSync('posts_Collected', postsCollected);
-    } 
+    app.getUserInfo(1,function (userInfo,isLogin) {
+      if (!isLogin) {
+        wx.navigateBack();
+      }
+      else {
+        that.setData({
+          author: "玄冰",
+          iconContact: "contact",
+          iconColock: "colock"
+        })
+        that.getData(blogId);
+        //收藏状态
+        var postsCollected = wx.getStorageSync('posts_Collected');
+        if (postsCollected) {
+          var isCollected = postsCollected[blogId];
+          that.setData({
+            collected: isCollected
+          })
+        }
+        else {
+          var postsCollected = {}
+          postsCollected[blogId] = false;
+          wx.setStorageSync('posts_Collected', postsCollected);
+        }
+      }
+    });  
   },
   onShareAppMessage: function () {
     return {
@@ -61,23 +76,23 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
     }
   },
   //返回上一页  
-  navigateBack: function(e){
-    wx.navigateBack(); 
+  navigateBack: function (e) {
+    wx.navigateBack();
   },
   //收藏
-  collection:function(e){
+  collection: function (e) {
     var postsCollected = wx.getStorageSync('posts_Collected');
     var postCollected = postsCollected[this.data.post.id];
     postCollected = !postCollected;
     postsCollected[this.data.post.id] = postCollected;
     wx.setStorageSync('posts_Collected', postsCollected);
-    this.showZanToast(postCollected?'已收藏':'已取消收藏');
+    this.showZanToast(postCollected ? '已收藏' : '已取消收藏');
     this.setData({
       collected: postCollected
     })
   },
   //打赏
-  reward:function(e){
+  reward: function (e) {
     this.showZanDialog({
       content: '您的分享与关注是对我最大的打赏！'
     }).then(() => {
@@ -95,7 +110,7 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
         var time = util.formatTime(post.created_at);
         post.created_at = time;
         post.slug = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle600To300;
-        
+
         this.setData({
           post: post
         });

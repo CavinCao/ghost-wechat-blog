@@ -12,13 +12,13 @@
   <view class="tag-body">
     <view class="tag-actions" bindtap="bindItemTap">
       <view class="like">
-        <view class="zan-icon zan-icon-contact zan-pull-left zan-font-12 "> </view>
+        <view class="zan-icon zan-icon-{{iconContact}} zan-pull-left zan-font-12 "> </view>
         <view class="zan-pull-left zan-font-12 ">
-          玄冰
+          {{author}}
         </view>
       </view>
       <view class="comments">
-        <view class="zan-icon zan-icon-clock zan-pull-left zan-font-12 "></view>
+        <view class="zan-icon zan-icon-{{iconColock}} zan-pull-left zan-font-12 "></view>
         <view class="zan-pull-left zan-font-12">
           <text>{{post.created_at}}</text>
         </view>

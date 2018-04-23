@@ -5,8 +5,8 @@
 
 const util = require('../../utils/util.js');
 const api = require('../../utils/api.js');
-var page = 0
-var app = getApp()
+const app = getApp();
+var page = 0;
 Page({
   data: {
     posts: [],
@@ -15,12 +15,15 @@ Page({
     nodata: false,
     nomore: false,
     lowerComplete: true,
-    defaultImageUrl: getApp().globalData.defaultImageUrl + getApp().globalData.imageStyle600To300
+    defaultImageUrl: app.globalData.defaultImageUrl + app.globalData.imageStyle600To300
   },
   onLoad: function () {
     console.log('onLoad')
     var that = this
+    app.getUserInfo(0,function (userInfo,isLogin) {
+    });
     this.getData();
+
   },
   lower: function () {
     let that = this;
@@ -77,7 +80,7 @@ Page({
         for (var post of posts) {
           var time = util.formatTime(post.created_at);
           post.created_at = time;
-          post.slug = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle600To300;
+          post.slug = app.globalData.imageUrl + post.slug + '.jpg?' + app.globalData.imageStyle600To300;
         }
         this.setData({
           posts: this.data.posts.concat(posts),
