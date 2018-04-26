@@ -12,6 +12,7 @@ const WxParse = require('../../wxParse/wxParse.js');
 const util = require('../../utils/util.js');
 const api = require('../../utils/api.js');
 const app = getApp();
+var recentUrl = '';
 
 Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
 
@@ -20,9 +21,10 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
    */
   data: {
     post: {},
-    author:"",
-    iconContact:"",
-    iconColock:"",
+    author: "",
+    iconContact: "",
+    iconColock: "",
+    collected: false,
     defaultImageUrl: getApp().globalData.defaultImageUrl + getApp().globalData.imageStyle600To300
   },
 
@@ -32,7 +34,7 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
   onLoad: function (options) {
     let that = this;
     let blogId = options.blogId;
-    app.getUserInfo(1,function (userInfo,isLogin) {
+    app.getUserInfo(1, function (userInfo, isLogin) {
       if (!isLogin) {
         wx.navigateBack();
       }
@@ -46,7 +48,7 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
         //收藏状态
         var postsCollected = wx.getStorageSync('posts_Collected');
         if (postsCollected) {
-          var isCollected = postsCollected[blogId];
+          var isCollected = postsCollected[blogId] == undefined ? false : postsCollected[blogId];
           that.setData({
             collected: isCollected
           })
@@ -57,7 +59,7 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
           wx.setStorageSync('posts_Collected', postsCollected);
         }
       }
-    });  
+    });
   },
   onShareAppMessage: function () {
     return {
@@ -81,15 +83,43 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
   },
   //收藏
   collection: function (e) {
+    let that = this;
     var postsCollected = wx.getStorageSync('posts_Collected');
-    var postCollected = postsCollected[this.data.post.id];
+    var postCollected = postsCollected[that.data.post.id];
     postCollected = !postCollected;
-    postsCollected[this.data.post.id] = postCollected;
+    postsCollected[that.data.post.id] = postCollected;
     wx.setStorageSync('posts_Collected', postsCollected);
-    this.showZanToast(postCollected ? '已收藏' : '已取消收藏');
-    this.setData({
+    that.showZanToast(postCollected ? '已收藏' : '已取消收藏');
+    that.setData({
       collected: postCollected
     })
+
+    //收藏明细
+    var postsRecent = wx.getStorageSync('posts_CollectedDetail');
+    var content = {};
+    content['imageUrl'] = recentUrl;
+    content['title'] = that.data.post.title;
+    content['time'] = util.formatTime(new Date());
+    if (postsRecent) {
+      if (postCollected) {
+        postsRecent[that.data.post.id] = content;
+        if (Object.getOwnPropertyNames(postsRecent).length > 30) {
+          for (var item in postsRecent) {
+            delete postsRecent[item];
+            break
+          }
+        }
+      }
+      else {
+        delete postsRecent[that.data.post.id];
+      }
+      wx.setStorageSync('posts_CollectedDetail', postsRecent);
+    }
+    else {
+      postsRecent = {};
+      postsRecent[that.data.post.id] = content;
+      wx.setStorageSync('posts_CollectedDetail', postsRecent);
+    }
   },
   //打赏
   reward: function (e) {
@@ -109,12 +139,36 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
         const post = res.data.posts[0];
         var time = util.formatTime(post.created_at);
         post.created_at = time;
+        recentUrl = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle200To200;
         post.slug = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle600To300;
 
         this.setData({
           post: post
         });
         WxParse.wxParse('article', 'html', post.html, that, 5);
+
+        //最近浏览
+        var postsRecent = wx.getStorageSync('posts_Recent');
+        var content = {};
+        content['imageUrl'] = recentUrl;
+        content['title'] = post.title;
+        content['time'] = util.formatTime(new Date());
+        if (postsRecent) {
+          postsRecent[post.id] = content;
+          if (Object.getOwnPropertyNames(postsRecent).length > 30) {
+            for (var item in postsRecent) {
+              delete postsRecent[item];
+              break
+            }
+          }
+          wx.setStorageSync('posts_Recent', postsRecent);
+        }
+        else {
+          postsRecent = {};
+          postsRecent[post.id] = content;
+          wx.setStorageSync('posts_Recent', postsRecent);
+        }
+
       },
     });
   }

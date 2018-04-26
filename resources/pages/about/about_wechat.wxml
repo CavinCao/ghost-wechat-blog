@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="zan-panel-title">关于这里</view>
+  <view class="zan-panel">
+    <view class='zan-font-14' style="padding: 15px;">
+      <text>只是学习过程中的一个寄托，一个港湾，一个承载学习过程的地方。
+            与需要的人分享，与一起奋斗的人共勉。
+      </text>
+    </view>
+  </view>
+
+  <view class="zan-panel-title">Bug生活2048由来</view>
+  <view class="zan-panel">
+    <view class='zan-font-14' style="padding: 15px;">
+      <text>其实没有啥由来，作为程序猿，第一个想到的就是bug，后来用bug开头找域名，发现bug1024被人注册了，然后就找到bug2048了，后来就有了bug生活2048这个名字。
+      </text>
+    </view>
+  </view>
+</view>

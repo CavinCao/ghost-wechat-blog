@@ -1,0 +1,41 @@
+<import src="/dist/loadmore/index.wxml" />
+<import src="/dist/dialog/index.wxml" />
+
+<view class="container">
+
+
+    <block wx:for="{{posts}}" wx:key="idx" wx:for-index="idx" data-data="{{item}}">
+
+      <view class="zan-panel zan-panel--without-top-border" >
+        <view class="zan-card">
+          <view class="zan-card__thumb">
+            <image class="zan-card__img" src="{{item.imageUrl}}" data-index="{{idx}}" binderror="errorloadImage" mode="aspectFit"></image>
+          </view>
+          <view class="zan-card__detail" id="{{item.id}}" bindtap="bindItemTap">
+            <view class="zan-card__detail-row " style='height:60px'>
+              <view class="zan-card zan-ellipsis--l2">
+                <text>{{item.title}}</text>
+              </view>
+            </view>
+
+            <view class="zan-card__detail-row zan-c-gray-darker">
+              <view class="zan-card">
+                <view class="zan-pull-left zan-font-12 .zan-margin">{{showName}}</view>
+                <view class="zan-ellipsis--l2 zan-pull-left zan-font-12">
+                  <text>{{item.created_at}}</text>
+                </view>
+              </view>
+            </view>
+
+          </view>
+        </view>
+      </view>
+
+    </block>
+    <template is="zan-loadmore" data="{{ loading }}" />
+    <template is="zan-loadmore" data="{{ nodata }}" />
+    <template is="zan-loadmore" data="{{ nomore }}" />
+
+</view>
+
+<template is="zan-dialog" data="{{ zanDialog }}"></template>

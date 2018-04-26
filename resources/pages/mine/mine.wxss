@@ -26,3 +26,16 @@
   margin: 0 0 20rpx 0;
 }
 
+.btn {
+  line-height: 120%;
+  background-color: #fff;
+  text-align: left;
+  margin-left: 0px;
+  padding-left: 0px;
+  font-size: 14px;
+}
+
+.btn::after {
+  border: none;
+}
+

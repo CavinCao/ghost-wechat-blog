@@ -4,7 +4,10 @@
     "pages/logs/logs",
     "pages/mine/mine",
     "pages/topic/topic",
-    "pages/detail/detail"
+    "pages/detail/detail",
+    "pages/collected/collected",
+    "pages/about/about_wechat",
+    "pages/about/about_me"
   ],
   "window": {
     "backgroundTextStyle": "light",

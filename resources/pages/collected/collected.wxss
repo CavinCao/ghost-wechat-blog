@@ -1,0 +1,17 @@
+/* pages/topic/topic.wxss */
+.zan-margin {
+  margin-right: 5px;
+  color: gray；;
+}
+
+.zan-margin-tag {
+  margin-right: 10px;
+  color: gray；;
+}
+
+.scorll-margin {
+  margin-top: 5px;
+  height: 100vh;
+}
+
+

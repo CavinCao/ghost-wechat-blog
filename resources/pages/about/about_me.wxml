@@ -1,0 +1,39 @@
+
+<view class="container">
+  <view class="zan-panel-title">关于我</view>
+  <view class="zan-panel">
+    <view class='zan-font-14' style="padding: 15px;">
+      <text>普通程序员一枚，没有高深的技术，有一颗学习的心。
+            喜欢周杰伦，喜欢火影，喜欢Dota，喜欢盗墓笔记。
+            很想脱离世俗，也想财务自由，无奈现实残酷，生活所迫，注定做个平凡人。\n
+            很想分享些什么，无奈知识有限。
+            很想记录些什么，无奈文笔有限。
+            但终究还是想写点什么，毕竟记忆力有限。
+      </text>
+    </view>
+  </view>
+
+  <view class="zan-panel-title">联系我</view>
+  <view class="zan-panel">
+    <view class="zan-cell">
+      <view>邮箱：</view>
+      <view class='zan-text-underline zan-c-blue' data-index='{{email}}' bindtap="copyDataTap">{{email}}</view>
+    </view>
+    <view class="zan-cell">
+      <view>微信公众号：</view>
+      <view class='zan-text-underline zan-c-blue ' bindtap="copyDataTap" data-index='{{wechat}} ' >{{wechat}}</view>
+    </view>
+    <view class="zan-cell">
+      <view>个人微信号：</view>
+      <view class='zan-text-underline zan-c-blue ' bindtap="copyDataTap" data-index='{{selfwechat}} '>{{selfwechat}}</view>
+    </view>
+    <view class="zan-cell">
+      <view>github：</view>
+      <view class='zan-text-underline zan-c-blue ' bindtap="copyDataTap" data-index='{{github}} '>{{github}}</view>
+    </view>
+    <view class="zan-cell">
+      <view>新浪微博：</view>
+      <view class='zan-text-underline zan-c-blue ' bindtap="copyDataTap" data-index='{{weibo}} '>{{weibo}}</view>
+    </view>
+  </view>
+</view>
