@@ -1,0 +1,17 @@
+<import src="/dist/toptips/index.wxml" />
+<view class='tag-title'>
+  <image mode="widthFix" style=' width: 200rpx;height: 200rpx;margin-top:150rpx' src="/images/172356420975864.gif"></image>
+</view>
+<view wx:if="{{canIUse}}">
+  <view class='zan-font-14 zan-c-gray-dark' style='text-align:center;margin-top:50rpx'>
+    允许微信授权后，可体验更多功能</view>
+  <view class="zan-btns">
+    <button open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" class="zan-btn zan-btn--primary">授权登录</button>
+    <button bindtap='navigateBack' class="zan-btn">返回首页</button>
+  </view>
+</view>
+
+<view wx:else class='zan-font-16 zan-c-red' style='text-align:center;margin-top:50rpx'>
+  您的微信版本过低，请升级后再次体验</view>
+
+<template is="zan-toptips" data="{{ zanTopTips }}"></template>

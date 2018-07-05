@@ -1,0 +1,5 @@
+/* pages/authorization/authorization.wxss */
+.tag-title {
+  margin-top: 10px;
+  text-align: center;
+}

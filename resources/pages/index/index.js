@@ -20,8 +20,6 @@ Page({
   onLoad: function () {
     console.log('onLoad')
     var that = this
-    app.getUserInfo(0,function (userInfo,isLogin) {
-    });
     this.getData();
 
   },

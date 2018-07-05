@@ -32,19 +32,17 @@ Page({
       url: '../about/about_wechat'
     })
   },
+  
   onLoad: function () {
     let that = this;
-    app.getUserInfo(1, function (userInfo, isLogin) {
-      if (!isLogin) {
-        wx.switchTab({
-          url: '/pages/index/index'
-        })
-      }
-      else {
-        that.setData({
-          userInfo: userInfo
-        });
-      }
+    if (!app.globalData.userInfo) {
+      wx.redirectTo({
+        url: '../authorization/authorization?backType=mine'
+      })
+    }
+
+    that.setData({
+      userInfo: app.globalData.userInfo
     });
   }
 })

@@ -31,44 +31,45 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     let that = this;
     let blogId = options.blogId;
-    app.getUserInfo(1, function (userInfo, isLogin) {
-      if (!isLogin) {
-        wx.navigateBack();
-      }
-      else {
-        that.setData({
-          author: "玄冰",
-          iconContact: "contact",
-          iconColock: "colock"
-        })
-        that.getData(blogId);
-        //收藏状态
-        var postsCollected = wx.getStorageSync('posts_Collected');
-        if (postsCollected) {
-          var isCollected = postsCollected[blogId] == undefined ? false : postsCollected[blogId];
-          that.setData({
-            collected: isCollected
-          })
-        }
-        else {
-          var postsCollected = {}
-          postsCollected[blogId] = false;
-          wx.setStorageSync('posts_Collected', postsCollected);
-        }
-      }
-    });
+
+    if (!app.globalData.userInfo) {
+      wx.redirectTo({
+        url: '../authorization/authorization?backType=' + blogId
+      })
+    }
+
+    that.setData({
+      author: "玄冰",
+      iconContact: "contact",
+      iconColock: "colock"
+    })
+    
+    that.getData(blogId);
+    //收藏状态
+    var postsCollected = wx.getStorageSync('posts_Collected');
+    if (postsCollected) {
+      var isCollected = postsCollected[blogId] == undefined ? false : postsCollected[blogId];
+      that.setData({
+        collected: isCollected
+      })
+    } else {
+      var postsCollected = {}
+      postsCollected[blogId] = false;
+      wx.setStorageSync('posts_Collected', postsCollected);
+    }
+
   },
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     return {
       title: this.data.post.title,
       path: '/pages/detail/detail?blogId=' + this.data.post.id
     }
   },
   //图片加载失败给到默认图片
-  errorloadImage: function (e) {
+  errorloadImage: function(e) {
     if (e.type == "error") {
       var post = this.data.post
       post.slug = this.data.defaultImageUrl
@@ -78,11 +79,11 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
     }
   },
   //返回上一页  
-  navigateBack: function (e) {
+  navigateBack: function(e) {
     wx.navigateBack();
   },
   //收藏
-  collection: function (e) {
+  collection: function(e) {
     let that = this;
     var postsCollected = wx.getStorageSync('posts_Collected');
     var postCollected = postsCollected[that.data.post.id];
@@ -109,27 +110,25 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
             break
           }
         }
-      }
-      else {
+      } else {
         delete postsRecent[that.data.post.id];
       }
       wx.setStorageSync('posts_CollectedDetail', postsRecent);
-    }
-    else {
+    } else {
       postsRecent = {};
       postsRecent[that.data.post.id] = content;
       wx.setStorageSync('posts_CollectedDetail', postsRecent);
     }
   },
   //打赏
-  reward: function (e) {
+  reward: function(e) {
     this.showZanDialog({
       content: '您的分享与关注是对我最大的打赏！'
     }).then(() => {
       console.log('=== shoe reward ===', 'type: confirm');
     });
   },
-  getData: function (blogId) {
+  getData: function(blogId) {
     let that = this;
     api.getBlogById({
       query: {
@@ -162,8 +161,7 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
             }
           }
           wx.setStorageSync('posts_Recent', postsRecent);
-        }
-        else {
+        } else {
           postsRecent = {};
           postsRecent[post.id] = content;
           wx.setStorageSync('posts_Recent', postsRecent);
