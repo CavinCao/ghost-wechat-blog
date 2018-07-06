@@ -7,42 +7,47 @@ Page({
     userInfo: {}
   },
   //事件处理函数
-  bindViewTap: function () {
+  bindViewTap: function() {
     wx.navigateTo({
       url: '../logs/logs'
     })
   },
-  showRecent: function () {
+  showRecent: function() {
     wx.navigateTo({
       url: '../collected/collected?gotoType=recent'
     })
   },
-  showCollected: function () {
+  showCollected: function() {
     wx.navigateTo({
       url: '../collected/collected?gotoType=collected'
     })
   },
-  showAboutMe: function () {
+  showAboutMe: function() {
     wx.navigateTo({
       url: '../about/about_me'
     })
   },
-  showAboutWechat: function () {
+  showAboutWechat: function() {
     wx.navigateTo({
       url: '../about/about_wechat'
     })
   },
-  
-  onLoad: function () {
-    let that = this;
-    if (!app.globalData.userInfo) {
-      wx.redirectTo({
-        url: '../authorization/authorization?backType=mine'
-      })
-    }
 
-    that.setData({
-      userInfo: app.globalData.userInfo
+  onLoad: function() {
+    let that = this;
+    app.checkUserInfo(function(userInfo, isLogin) {
+      if (!isLogin) {
+        wx.redirectTo({
+          url: '../authorization/authorization?backType=mine'
+        })
+      }
+      else{
+        that.setData({
+          userInfo: userInfo
+        });
+      }
     });
+
+   
   }
 })

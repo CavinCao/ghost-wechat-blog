@@ -34,13 +34,14 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
   onLoad: function(options) {
     let that = this;
     let blogId = options.blogId;
-
-    if (!app.globalData.userInfo) {
-      wx.redirectTo({
-        url: '../authorization/authorization?backType=' + blogId
-      })
-    }
-
+    app.checkUserInfo(function (userInfo, isLogin) {
+      if (!isLogin) {
+        wx.redirectTo({
+          url: '../authorization/authorization?backType=' + blogId
+        })
+      }
+    })
+    
     that.setData({
       author: "玄冰",
       iconContact: "contact",

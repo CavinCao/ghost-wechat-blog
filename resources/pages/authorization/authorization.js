@@ -35,7 +35,7 @@ Page(Object.assign({}, Zan.TopTips, {
 
   bindGetUserInfo: function(e) {
     let backtype = this.data.backType;
-    //console.log(e.detail.userInfo)
+    console.log(e.detail.userInfo)
     if (e.detail.userInfo) {
       app.globalData.userInfo = e.detail.userInfo
       if (backtype =='index') {
