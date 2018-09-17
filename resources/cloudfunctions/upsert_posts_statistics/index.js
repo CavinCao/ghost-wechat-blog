@@ -5,7 +5,7 @@ cloud.init()
 
 const db = cloud.database()
 
-// 云函数入口函数
+// 更新文章统计数据，没有则默认初始化一笔
 exports.main = async (event, context) => {
   try {
     var posts = await db.collection('posts_statistics').where({

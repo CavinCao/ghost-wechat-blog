@@ -6,7 +6,7 @@ cloud.init()
 const db = cloud.database()
 const _ = db.command
 
-// 云函数入口函数
+// 根据文章Id集合批量查询统计数据
 exports.main = async (event, context) => {
   try {
     var result= await db.collection('posts_statistics').where({
