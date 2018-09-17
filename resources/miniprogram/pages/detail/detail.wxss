@@ -1,0 +1,58 @@
+/* pages/detail/detail.wxss */
+@import "/wxParse/wxParse.wxss";
+
+.feed-item {
+  padding: 30rpx 30rpx 20rpx;
+  margin: 0rpx 0 0 0;
+  background: #fff;
+}
+
+.feed-item .tag-title {
+  margin-top: 10rpx;
+  text-align: center;
+}
+
+.feed-item .tag-title image {
+  width: 100%;
+}
+
+.feed-item .tag-body {
+  padding: 10rpx 0 0 0;
+  line-height: 28rpx;
+  color: #5b5b5b;
+}
+
+.feed-item  .tag-actions {
+  color: #a0acac;
+}
+
+.feed-item  .tag-actions view {
+  display: inline-block;
+  vertical-align: text-bottom;
+  padding: 0 10rpx 0 0;
+}
+
+.detail-tab {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.detail-tab .item-body {
+  margin: 10rpx 0 10rpx 0;
+}
+
+.detail-tab .item-body .btn {
+  line-height: 120%;
+  background-color: #fff;
+}
+
+.detail-tab .item-body .btn::after {
+  border: none;
+}
+
+.detail-tab .item-body .iconimage {
+  width: 20px;
+  height: 20px;
+}

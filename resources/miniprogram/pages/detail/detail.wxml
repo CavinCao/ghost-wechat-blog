@@ -1,0 +1,82 @@
+<import src="../../wxParse/wxParse.wxml" />
+<import src="/dist/dialog/index.wxml" />
+<import src="/dist/toast/index.wxml" />
+
+<!--文章头部-->
+<view class="feed-item" id="{{post.id}}">
+  <view class="zan-font-16">
+    <text>{{post.title}}</text>
+  </view>
+  <view class='tag-title'>
+    <image mode="widthFix" binderror="errorloadImage" src="{{post.slug}}"></image>
+  </view>
+  <view class="tag-body">
+    <view class="tag-actions" bindtap="bindItemTap">
+          <view class="icon-author">
+            <view class="zan-icon zan-icon-contact zan-pull-left zan-font-12 "> </view>
+            <view class="zan-pull-left zan-font-12 ">
+              玄冰
+            </view>
+          </view>
+          <view class="icon-created">
+            <view class="zan-icon zan-icon-clock zan-pull-left zan-font-12 "></view>
+            <view class="zan-pull-left zan-font-12">
+              <text>{{post.created_at}}</text>
+            </view>
+          </view>
+          <view class="icon-review">
+            <view class="zan-icon zan-icon-browsing-history zan-pull-left zan-font-12 "></view>
+            <view class="zan-pull-left zan-font-12">
+              <text>{{post.view_count}}</text>
+            </view>
+          </view>
+          <view class="icon-comment">
+            <view class="zan-icon zan-icon-records zan-pull-left zan-font-12 "></view>
+            <view class="zan-pull-left zan-font-12">
+              <text>{{post.comment_count}}</text>
+            </view>
+          </view>
+          <view class="icon-like">
+            <view class="zan-icon zan-icon-like zan-pull-left zan-font-12 "></view>
+            <view class="zan-pull-left zan-font-12">
+              <text>{{post.like_count}}</text>
+            </view>
+          </view>
+    </view>
+  </view>
+</view>
+
+<!--文章主体-->
+<view class="wxParse" style='padding:0 20rpx 200rpx 20rpx'>
+  <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+</view>
+  <view class="zan-panel detail-tab">
+    <view class="zan-col zan-col-6 item-body" bindtap="navigateBack">
+      <button class="btn">
+        <image class='iconimage' src="/images/icon/left.png"></image>
+        <view class='zan-font-12 zan-c-gray-dark'>返回</view>
+      </button>
+    </view>
+    <view class="zan-col zan-col-6 item-body" bindtap="collection">
+      <button class="btn">
+        <image class='iconimage' src="{{collected?'/images/icon/collected.png':'/images/icon/collect.png'}}"></image>
+        <view class='zan-font-12 zan-c-gray-dark'>收藏</view>
+      </button>
+    </view>
+    <view class="zan-col zan-col-6 item-body" bindtap="reward">
+      <button class="btn">
+        <image class='iconimage' src="/images/icon/money.png"></image>
+        <view class='zan-font-12 zan-c-gray-dark'>打赏</view>
+      </button>
+    </view>
+    <view class="zan-col zan-col-6 item-body">
+      <button class="btn" open-type="share">
+        <image class='iconimage' src="/images/icon/share.png"></image>
+        <view class='zan-font-12 zan-c-gray-dark'>分享</view>
+      </button>
+    </view>
+  </view>
+
+
+<template is="zan-dialog" data="{{ zanDialog }}"></template>
+<template is="zan-toast" data="{{ zanToast }}"></template>
