@@ -12,36 +12,36 @@
   </view>
   <view class="tag-body">
     <view class="tag-actions" bindtap="bindItemTap">
-          <view class="icon-author">
-            <view class="zan-icon zan-icon-contact zan-pull-left zan-font-12 "> </view>
-            <view class="zan-pull-left zan-font-12 ">
-              玄冰
-            </view>
-          </view>
-          <view class="icon-created">
-            <view class="zan-icon zan-icon-clock zan-pull-left zan-font-12 "></view>
-            <view class="zan-pull-left zan-font-12">
-              <text>{{post.created_at}}</text>
-            </view>
-          </view>
-          <view class="icon-review">
-            <view class="zan-icon zan-icon-browsing-history zan-pull-left zan-font-12 "></view>
-            <view class="zan-pull-left zan-font-12">
-              <text>{{post.view_count}}</text>
-            </view>
-          </view>
-          <view class="icon-comment">
-            <view class="zan-icon zan-icon-records zan-pull-left zan-font-12 "></view>
-            <view class="zan-pull-left zan-font-12">
-              <text>{{post.comment_count}}</text>
-            </view>
-          </view>
-          <view class="icon-like">
-            <view class="zan-icon zan-icon-like zan-pull-left zan-font-12 "></view>
-            <view class="zan-pull-left zan-font-12">
-              <text>{{post.like_count}}</text>
-            </view>
-          </view>
+      <view class="icon-author">
+        <view class="zan-icon zan-icon-contact zan-pull-left zan-font-12 "> </view>
+        <view class="zan-pull-left zan-font-12 ">
+          玄冰
+        </view>
+      </view>
+      <view class="icon-created">
+        <view class="zan-icon zan-icon-clock zan-pull-left zan-font-12 "></view>
+        <view class="zan-pull-left zan-font-12">
+          <text>{{post.created_at}}</text>
+        </view>
+      </view>
+      <view class="icon-review">
+        <view class="zan-icon zan-icon-browsing-history zan-pull-left zan-font-12 "></view>
+        <view class="zan-pull-left zan-font-12">
+          <text>{{post.view_count}}</text>
+        </view>
+      </view>
+      <view class="icon-comment">
+        <view class="zan-icon zan-icon-records zan-pull-left zan-font-12 "></view>
+        <view class="zan-pull-left zan-font-12">
+          <text>{{post.comment_count}}</text>
+        </view>
+      </view>
+      <view class="icon-like">
+        <view class="zan-icon zan-icon-like zan-pull-left zan-font-12 "></view>
+        <view class="zan-pull-left zan-font-12">
+          <text>{{post.like_count}}</text>
+        </view>
+      </view>
     </view>
   </view>
 </view>
@@ -50,7 +50,82 @@
 <view class="wxParse" style='padding:0 20rpx 200rpx 20rpx'>
   <template is="wxParse" data="{{wxParseData:article.nodes}}" />
 </view>
-  <view class="zan-panel detail-tab">
+<!--评论区-->
+<view>
+  <view class="menuBackground" catchtap="hiddenMenubox"></view>
+  <view>
+    <view class="comment-fixed">
+      <form catchsubmit="formSubmit" report-submit="true">
+        <view class="comment-respond">
+          <input class="comment-input" maxlength="200" name="inputPostID" value="{{detail.id}}" style="display:none" />
+          <view class="comment-box">
+            <view class="zan-icon zan-icon-wap-home zan-font-20 " style="margin-left:20rpx;margin-right:20rpx;margin-top:6rpx"> </view>
+
+            <input class="comment-input" type='text' confirm-type="send" cursor-spacing="10" maxlength="100" name="inputComment" value="{{content}}" placeholder="{{placeholder}}" focus="{{focus}}" bindblur="onReplyBlur" bindfocus="onRepleyFocus" />
+            <button class="comment-button touch-active" formType="submit">发送</button>
+            <view class="zan-icon zan-icon-add-o zan-font-20 " style="margin-right:20rpx;margin-top:6rpx" catchtap='showHideMenu'> </view>
+          </view>
+          <!--功能图标-->
+          <view class="menu-box {{isShow ? 'emoji-move-in' : 'emoji-move-out'}} {{isLoad ? 'no-emoji-move' : ''}}">
+            <view class="iconList">
+              <view class="iconLine">
+                <view style="width:20%; position: relative; float:left; text-align:center">
+
+                  <view>
+                    <image src="../../images/icon/share.png" class="img-menu"></image>
+                  </view>
+                  <view>
+                    <text>转发</text>
+                  </view>
+                  <button class="share-button share-button touch-active" open-type="share">
+                  </button>
+                </view>
+                <view style="width:20%; float:left; text-align:center">
+                  <view>
+                    <image src="../../images/icon/poster.png" catchtap="downimageTolocal" class="img-menu"></image>
+                  </view>
+                  <view>
+                    <text>海报</text>
+                  </view>
+                </view>
+                <view style="width:20%; float:left; text-align:center">
+                  <view>
+                    <image src="../../images/icon/collect.png" class="img-menu" catchtap="gotowebpage"></image>
+                  </view>
+                  <view>
+                    <text>阅读原文</text>
+                  </view>
+                </view>
+
+                <view style="width:20%; float:left; text-align:center">
+                  <view>
+                    <image src="../../images/icon/like.png" catchtap="clickLike" id="likebottom" class="img-menu"></image>
+                  </view>
+                  <view>
+                    <text>点赞</text>
+                  </view>
+                </view>
+                <view style="width:20%; float:left; ">
+                  <view>
+                    <image src="../../images/icon/reward.png" catchtap="praise" class="img-menu"></image>
+                  </view>
+                  <view>
+                    <text>赞赏</text>
+                  </view>
+
+                </view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </form>
+    </view>
+  </view>
+</view>
+<!-- 评论区 -->
+
+<!--<view class="zan-panel detail-tab">
     <view class="zan-col zan-col-6 item-body" bindtap="navigateBack">
       <button class="btn">
         <image class='iconimage' src="/images/icon/left.png"></image>
@@ -75,7 +150,7 @@
         <view class='zan-font-12 zan-c-gray-dark'>分享</view>
       </button>
     </view>
-  </view>
+  </view>-->
 
 
 <template is="zan-dialog" data="{{ zanDialog }}"></template>

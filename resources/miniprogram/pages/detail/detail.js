@@ -27,7 +27,8 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
     iconContact: "",
     iconColock: "",
     collected: false,
-    defaultImageUrl: getApp().globalData.defaultImageUrl + getApp().globalData.imageStyle600To300
+    defaultImageUrl: getApp().globalData.defaultImageUrl + getApp().globalData.imageStyle600To300,
+    isShow:false
   },
 
   /**
@@ -215,5 +216,16 @@ Page(Object.assign({}, Zan.Dialog, Zan.Toast, {
       postsRecent[post.id] = content;
       wx.setStorageSync('posts_Recent', postsRecent);
     }
+  },
+
+  /**
+   * 是否显示功能菜单
+   */
+  showHideMenu: function () {
+    this.setData({
+      isShow: !this.data.isShow,
+      isLoad: false,
+      menuBackgroup: !this.data.false
+    })
   }
 }));

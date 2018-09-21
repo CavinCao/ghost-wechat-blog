@@ -32,4 +32,7 @@
     <view class="zan-cell__bd">关于Bug生活2048</view>
     <view class="zan-cell__ft"></view>
   </view>
+    <view>
+   <official-account></official-account>
+</view>
 </view>

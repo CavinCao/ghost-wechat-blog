@@ -4,6 +4,9 @@
 <scroll-view scroll-y="true" class="container" bindscrolltolower="lower" enable-back-to-top="true" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
 
   <block wx:for="{{posts}}" wx:key="idx" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
+<view style="position:fixed;bottom:0;z-index:10;width:750rpx;">
+   <official-account></official-account>
+</view>
     <view class="feed-item" id="{{item.id}}" bindtap="bindItemTap">
       <view class="zan-font-16">
         <text>{{item.title}}</text>
@@ -53,4 +56,5 @@
   <template is="zan-loadmore" data="{{ loading }}" />
   <template is="zan-loadmore" data="{{ nodata }}" />
   <template is="zan-loadmore" data="{{ nomore }}" />
+
 </scroll-view>
