@@ -85,6 +85,11 @@ Page({
         });
       }
 
+      that.setData({
+        page: res.data.meta.pagination.page,
+        loading: false
+      });
+
       const posts = res.data.posts;
       var postIds = [];
       posts.forEach(function (v) { postIds.push(v.id); });
