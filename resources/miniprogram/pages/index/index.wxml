@@ -1,8 +1,11 @@
 <!--index.wxml-->
 <import src="/dist/loadmore/index.wxml" />
 
+<!--<view style="position:fixed;top:0;z-index:10;width:750rpx;">
+  <official-account></official-account>
+</view>-->
+  <official-account></official-account>
 <scroll-view scroll-y="true" class="container" bindscrolltolower="lower" enable-back-to-top="true" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
-
   <block wx:for="{{posts}}" wx:key="idx" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
     <view class="feed-item" id="{{item.id}}" bindtap="bindItemTap">
       <view class="zan-font-16">
