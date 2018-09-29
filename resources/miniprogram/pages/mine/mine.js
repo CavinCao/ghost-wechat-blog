@@ -4,7 +4,10 @@ const app = getApp()
 
 Page({
   data: {
-    userInfo: {}
+    userInfo: {},
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    showPopup: false
+
   },
   //事件处理函数
   bindViewTap: function() {
@@ -37,8 +40,8 @@ Page({
     let that = this;
     app.checkUserInfo(function(userInfo, isLogin) {
       if (!isLogin) {
-        wx.redirectTo({
-          url: '../authorization/authorization?backType=mine'
+        that.setData({
+          showPopup: true
         })
       }
       else{
@@ -49,5 +52,19 @@ Page({
     });
 
    
+  },
+  bindGetUserInfo: function (e) {
+    console.log(e.detail.userInfo)
+    if (e.detail.userInfo) {
+      app.globalData.userInfo = e.detail.userInfo
+      this.setData({
+        showPopup: !this.data.showPopup,
+        userInfo: e.detail.userInfo
+      });
+    } else {
+      wx.switchTab({
+        url: '../index/index'
+      })
+    }
   }
 })

@@ -7,8 +7,7 @@
     "pages/detail/detail",
     "pages/collected/collected",
     "pages/about/about_wechat",
-    "pages/about/about_me",
-    "pages/authorization/authorization"
+    "pages/about/about_me"
   ],
   "window": {
     "backgroundTextStyle": "light",

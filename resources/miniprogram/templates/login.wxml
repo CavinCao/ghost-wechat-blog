@@ -1,0 +1,23 @@
+<!--templates/login.wxml-->
+
+<template name="login">
+  <view class="zan-popup {{ showPopup ? 'zan-popup--show' : ''}}">
+    <view class="zan-popup__mask"></view>
+    <view class="zan-popup__container popup-example--center" style='width:80%'>
+      <view wx:if="{{canIUse}}">
+        <view style='  display: flex;flex-direction: column;align-items: center;margin-top:20rpx'>
+          <image style='width: 100rpx;height: 100rpx;margin: 20rpx;border-radius: 50%;' src="../../images/icon/gravatar.png" background-size="cover"></image>
+        </view>
+        <view class='zan-font-14 zan-c-gray-dark' style='text-align:center;margin-top:10rpx'>
+          允许微信授权后，可体验更多功能</view>
+        <view class="zan-btns">
+          <button open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" class="zan-btn zan-btn--primary">授权登录</button>
+          <button bindtap='navigateBack' class="zan-btn">返回首页</button>
+        </view>
+      </view>
+
+      <view wx:else class='zan-font-16 zan-c-red' style='text-align:center;margin-top:50rpx'>
+        您的微信版本过低，请升级后再次体验</view>
+    </view>
+  </view>
+</template>

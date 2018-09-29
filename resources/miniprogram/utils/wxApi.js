@@ -1,3 +1,5 @@
+const db = wx.cloud.database()
+const _ = db.command
 
 function wxPromisify(fn) {
   return function (obj = {}) {
@@ -53,8 +55,51 @@ function upsertPostsStatistics(data) {
   })
 }
 
+/**
+ * 新增评论
+ */
+function insertPostsCommonts(data){
+  return db.collection('posts_comments').add({
+    data: data
+  })
+}
+
+/**
+ * 新增子评论
+ */
+function pushChildrenCommonts(id,data){
+  var callcloudFunction = wxPromisify(wx.cloud.callFunction)
+  return callcloudFunction({
+    name: 'push_child_comments',
+    data: {
+      id: id,
+      comments: data
+    }
+  })
+  /*return db.collection('posts_comments').doc(id).update({
+    data: {
+      childComment: _.push(data)
+    }
+  })*/
+}
+
+/**
+ * 获取评论
+ */
+function getPostsCommonts(postId,page){
+  return db.collection('posts_comments')
+    .where({postId: postId})
+    .orderBy('timestamp', 'desc')
+    .skip((page - 1) * 10)
+    .limit(10)
+    .get()
+}
+
 
 module.exports = {
   getPostStatistics: getPostStatistics,
-  upsertPostsStatistics: upsertPostsStatistics
+  upsertPostsStatistics: upsertPostsStatistics,
+  insertPostsCommonts: insertPostsCommonts,
+  getPostsCommonts: getPostsCommonts,
+  pushChildrenCommonts: pushChildrenCommonts
 }
