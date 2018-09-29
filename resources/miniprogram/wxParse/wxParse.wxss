@@ -17,7 +17,7 @@
   line-height: 1.8;
 }
 
-view {
+.wxParse view {
   word-break: break-all;
   overflow: auto;
 }

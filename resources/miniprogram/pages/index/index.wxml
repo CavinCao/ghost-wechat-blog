@@ -56,4 +56,5 @@
   <template is="zan-loadmore" data="{{ loading }}" />
   <template is="zan-loadmore" data="{{ nodata }}" />
   <template is="zan-loadmore" data="{{ nomore }}" />
+
 </scroll-view>
