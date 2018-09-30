@@ -259,8 +259,6 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
       toName: name,
       toOpenId: openId
     });
-
-
   },
   /**
    * 聚焦时触发
