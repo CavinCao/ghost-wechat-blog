@@ -2,6 +2,8 @@ const apiURL = 'https://www.bug2048.com/ghost/api/v0.1';
 const clientId = 'ghost-frontend';
 const clientSecret = 'ed4c807905b8';
 
+const downloadFileURL ='https://bug2048-1253706941.cos.ap-shanghai.myqcloud.com'
+
 const wxRequest = (params, url) => {
   wx.request({
     url,
@@ -52,8 +54,17 @@ const getBlogByTag = (params) => {
   wxRequest(params, `${apiURL}/posts?page=${params.query.page}&limit=${params.query.limit}&client_id=${clientId}&client_secret=${clientSecret}&filter=${params.query.filter}`);
 };
 
+/**
+ * 下载头图文件
+ */
+const getdownloadFileURL = (name) => {
+  var url = `${downloadFileURL}/${name}`
+  return url
+};
+
 module.exports = {
   getBlogList,
   getBlogById,
-  getBlogByTag
+  getBlogByTag,
+  getdownloadFileURL
 };

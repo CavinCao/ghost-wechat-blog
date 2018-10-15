@@ -38,15 +38,17 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
     placeholder: "评论...",
     focus: false,
     toName: "",
-    toOpenId:"",
+    toOpenId: "",
     commentId: "",
     menuBackgroup: false,
     loading: false,
     nodata: false,
     nomore: false,
-    nodata_str:"暂无评论，赶紧抢沙发吧",
-    showPopup:false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    nodata_str: "暂无评论，赶紧抢沙发吧",
+    showPopup: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    showPosterPopup: false,
+    showPosterImage: ""
   },
 
   /**
@@ -191,11 +193,11 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
         cOpenId: app.globalData.openid,
         cNickName: app.globalData.userInfo.nickName,
         cAvatarUrl: app.globalData.userInfo.avatarUrl,
-        timestamp: new Date().getTime(),//new Date(),
+        timestamp: new Date().getTime(), //new Date(),
         createDate: util.formatTime(new Date()),
         comment: comment,
         tNickName: toName,
-        tOpenId:toOpenId,
+        tOpenId: toOpenId,
         flag: 0
       }]
       console.info(commentId)
@@ -366,13 +368,59 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
    * 生成图片海报
    */
   bulidImage: function(e) {
-    this.showZanDialog({
+    /**this.showZanDialog({
       content: '程序员有点懒，该功能还未开发'
     }).then(() => {
       console.log('=== shoe reward ===', 'type: confirm');
     }).catch(() => {
       console.log('=== dialog ===', 'type: cancel');
-    });
+    });**/
+
+    var that = this
+    that.showHideMenu()
+
+    var defaultImageUrl = ""
+    var qrcodeUrl = ""
+
+    if (that.data.showPosterImage === "") {
+
+      wx.showLoading({
+        title: "正在生成海报",
+        mask: true,
+      });
+
+      wxApi.getImageInfo(api.getdownloadFileURL(that.data.slug))
+        .then(res => {
+          console.info(res.path)
+          defaultImageUrl = res.path
+          return wxApi.getCloudFile('xiaochengxu.jpg')
+        }).then(res => {
+          console.info(res)
+          qrcodeUrl = res.tempFilePath
+
+          that.createPosterWithCanvas(defaultImageUrl, qrcodeUrl, that.data.post.title, that.data.post.custom_excerpt)
+        }).catch(res => {
+          //首图不存在，给默认图片
+          console.info(res)
+          wxApi.getImageInfo(api.getdownloadFileURL('blogdefault.jpeg'))
+            .then(res => {
+              console.info(res.path)
+              defaultImageUrl = res.path
+              return wxApi.getCloudFile('xiaochengxu.jpg')
+            }).then(res => {
+              console.info(res)
+              qrcodeUrl = res.tempFilePath
+
+              that.createPosterWithCanvas(defaultImageUrl, qrcodeUrl, that.data.post.title, that.data.post.custom_excerpt)
+            })
+
+        })
+    } else {
+      that.setData({
+        showPosterPopup: true
+      })
+    }
+
   },
   /**
    *  喜欢按钮操作
@@ -413,7 +461,9 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
     var getPostsRequest = wxRequest.getRequest(api.getBlogById(query));
     getPostsRequest.then(res => {
 
+
       const post = res.data.posts[0];
+      var slug = post.slug + '.jpg'
       var time = util.formatTime(post.created_at);
       post.created_at = time;
       recentUrl = getApp().globalData.imageUrl + post.slug + '.jpg?' + getApp().globalData.imageStyle200To200;
@@ -430,7 +480,8 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
         }
 
         this.setData({
-          post: post
+          post: post,
+          slug: slug
         });
 
       })
@@ -522,8 +573,10 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
     })
   },
 
-  bindGetUserInfo: function (e) {
-    console.log(e.detail.userInfo)
+  /**
+   * 授权登录
+   */
+  bindGetUserInfo: function(e) {
     if (e.detail.userInfo) {
       app.globalData.userInfo = e.detail.userInfo
       this.setData({
@@ -534,5 +587,132 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
         url: '../index/index'
       })
     }
-  }
+  },
+
+  /**
+   * 利用画布生成海报
+   */
+  createPosterWithCanvas: function(postImageLocal, qrcodeLoal, title, custom_excerpt) {
+    var that = this;
+
+    var context = wx.createCanvasContext('mycanvas');
+    context.setFillStyle('#ffffff');
+    context.fillRect(0, 0, 600, 970);
+    context.drawImage(postImageLocal, 0, 0, 600, 300); //绘制首图
+    context.drawImage(qrcodeLoal, 210, 650, 180, 180); //绘制二维码
+    context.setFillStyle("#000000");
+    context.setFontSize(20);
+    context.setTextAlign('center');
+    context.fillText("阅读文章,请长按识别二维码", 300, 895);
+    context.setFillStyle("#000000");
+    context.beginPath() //分割线
+    context.moveTo(30, 620)
+    context.lineTo(570, 620)
+    context.stroke();
+    context.setTextAlign('left');
+    context.setFontSize(40);
+
+    if (title.lengh <= 12) {
+      context.fillText(title, 40, 360);
+    } else {
+      context.fillText(title.substring(0, 12), 40, 360);
+      context.fillText(title.substring(12, 26), 40, 410);
+    }
+
+    context.setFontSize(20);
+    if (custom_excerpt.lengh <= 26) {
+      context.fillText(custom_excerpt, 40, 470);
+    } else {
+      context.fillText(custom_excerpt.substring(0, 26), 40, 470);
+      context.fillText(custom_excerpt.substring(26, 50) + '...', 40, 510);
+    }
+
+    context.draw();
+
+    setTimeout(function() {
+      wx.canvasToTempFilePath({
+        canvasId: 'mycanvas',
+        success: function(res) {
+          var tempFilePath = res.tempFilePath;
+          wx.hideLoading();
+          console.log("海报图片路径：" + res.tempFilePath);
+          that.setData({
+            showPosterPopup: true,
+            showPosterImage: res.tempFilePath
+          })
+        },
+        fail: function(res) {
+          console.log(res);
+        }
+      });
+    }, 900);
+  },
+
+  /**
+   * 取消保存海报图片
+   */
+  cacenlPosterImage: function() {
+    this.setData({
+      showPosterPopup: false
+    })
+  },
+  /**
+   * 保存海报图片
+   */
+  savePosterImage: function() {
+    let that = this
+    wx.saveImageToPhotosAlbum({
+      filePath: that.data.showPosterImage,
+      success(result) {
+        console.log(result)
+        wx.showModal({
+          title: '提示',
+          content: '二维码海报已存入手机相册，赶快分享到朋友圈吧',
+          showCancel: false,
+          success: function(res) {
+            that.setData({
+              showPosterPopup: false
+            })
+          }
+        })
+      },
+      fail: function(err) {
+        console.log(err);
+        if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+          console.log("再次发起授权");
+          wx.showModal({
+            title: '用户未授权',
+            content: '如需保存海报图片到相册，需获取授权.是否在授权管理中选中“保存到相册”?',
+            showCancel: true,
+            success: function(res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+                wx.openSetting({
+                  success: function success(res) {
+                    console.log('打开设置', res.authSetting);
+                    wx.openSetting({
+                      success(settingdata) {
+                        console.log(settingdata)
+                        if (settingdata.authSetting['scope.writePhotosAlbum']) {
+                          console.log('获取保存到相册权限成功');
+                        } else {
+                          console.log('获取保存到相册权限失败');
+                        }
+                      }
+                    })
+
+                  }
+                });
+              }
+            }
+          })
+        }
+      }
+    });
+  },
+  posterImageClick: function(e) {
+    wx.previewImage({
+      urls: [this.data.showPosterImage],
+    });
+  },
 }));

@@ -95,11 +95,54 @@ function getPostsCommonts(postId,page){
     .get()
 }
 
+/**
+ * 获取小程序二维码
+ */
+function getPostsQrcode(data) {
+  var callcloudFunction = wxPromisify(wx.cloud.callFunction)
+  return callcloudFunction({
+    name: 'get_posts_qrcode'
+  })
+}
+
+/**
+ * 下载文件
+ */
+function getDownloadFile(data){
+  var downloadFileFunction = wxPromisify(wx.downloadFile)
+  return downloadFileFunction({
+    url:data
+  })
+}
+
+/**
+ * 获取图片文件
+ */
+function getImageInfo(data) {
+  var getImageInfoFunction = wxPromisify(wx.getImageInfo)
+  return getImageInfoFunction({
+    src: data
+  })
+}
+
+/**
+ * 获取云存储文件
+ */
+function getCloudFile(data) {
+  return wx.cloud.downloadFile({
+    fileID: `cloud://env-034d6b.656e-env-034d6b/${data}`
+  })
+}
+
 
 module.exports = {
   getPostStatistics: getPostStatistics,
   upsertPostsStatistics: upsertPostsStatistics,
   insertPostsCommonts: insertPostsCommonts,
   getPostsCommonts: getPostsCommonts,
-  pushChildrenCommonts: pushChildrenCommonts
+  pushChildrenCommonts: pushChildrenCommonts,
+  getPostsQrcode: getPostsQrcode,
+  getDownloadFile: getDownloadFile,
+  getImageInfo: getImageInfo,
+  getCloudFile: getCloudFile
 }

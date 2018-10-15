@@ -1,0 +1,29 @@
+/* miniprogram/templates/poster.wxss */
+.poster-content {
+  padding: 80rpx 32rpx 40rpx 32rpx;
+  border-radius: 20rpx;
+  text-align:center;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  height: 86rpx;
+  border-top: 1px solid #dedede;
+  font-size: 30rpx;
+  line-height: 86rpx;
+  margin-top:50rpx;
+ align-self: flex-end;
+
+}
+.btn-cancel {
+  width: 50%;
+  color: #000000;
+  text-align: center;
+  border-right: 1px solid #dedede;
+}
+.btn-confirm {
+  width: 50%;
+  color: #3cc51f;
+  text-align: center;
+}

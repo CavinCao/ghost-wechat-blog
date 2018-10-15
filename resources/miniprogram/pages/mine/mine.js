@@ -43,17 +43,16 @@ Page({
         that.setData({
           showPopup: true
         })
-      }
-      else{
+      } else {
         that.setData({
           userInfo: userInfo
         });
       }
     });
 
-   
+
   },
-  bindGetUserInfo: function (e) {
+  bindGetUserInfo: function(e) {
     console.log(e.detail.userInfo)
     if (e.detail.userInfo) {
       app.globalData.userInfo = e.detail.userInfo
@@ -66,5 +65,14 @@ Page({
         url: '../index/index'
       })
     }
-  }
+  },
+
+  /**
+   * 返回
+   */
+  navigateBack: function(e) {
+    wx.switchTab({
+      url: '../index/index'
+    })
+  },
 })

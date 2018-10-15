@@ -1,0 +1,15 @@
+<template name="poster">
+  <view class="zan-popup {{ showPosterPopup ? 'zan-popup--show' : ''}}">
+    <view class="zan-popup__mask"></view>
+    <view class="zan-popup__container popup-example--center" style='width:80%;height:90%;border-radius: 20rpx;'>
+      <view class='zan-font-12 zan-c-gary' style='text-align:center;margin-top:50rpx'>保存至相册可以分享至朋友圈</view>
+      <view class='poster-content'>
+        <image style="background-color: #eeeeee;width:450rpx;height:900rpx" mode="widthFix" src="{{showPosterImage}}" data-src="{{item.fieldDatasource}}" bindtap="posterImageClick"></image>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-cancel" bindtap="cacenlPosterImage" data-status="cancel">取消</view>
+        <view class="btn-confirm" bindtap="savePosterImage" data-status="confirm">保存到本地相册</view>
+      </view>
+    </view>
+  </view>
+</template>
