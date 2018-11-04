@@ -7,6 +7,8 @@
 <official-account></official-account>
 <scroll-view scroll-y="true" class="container" bindscrolltolower="lower" enable-back-to-top="true" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
   <block wx:for="{{posts}}" wx:key="idx" wx:for-index="idx" wx:for-item="item" data-idx="{{idx}}">
+  <view wx:if="{{idx=='2'}}" style='margin-bottom:20rpx'> <ad unit-id="adunit-2d193bfd96899e86"></ad></view>
+ 
     <view class="feed-item" id="{{item.id}}" bindtap="bindItemTap">
       <view class="zan-font-16">
         <text>{{item.title}}</text>
