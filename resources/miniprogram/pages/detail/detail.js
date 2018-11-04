@@ -130,8 +130,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   formSubmit: function(e) {
     var that = this
     var comment = e.detail.value.inputComment;
-    if (comment ==undefined||comment.length === 0) {
-      //提示
+    if (comment ||comment.length === 0) {
       return
     }
     var commentId = that.data.commentId
