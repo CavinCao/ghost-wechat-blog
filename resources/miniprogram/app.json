@@ -7,7 +7,8 @@
     "pages/detail/detail",
     "pages/collected/collected",
     "pages/about/about_wechat",
-    "pages/about/about_me"
+    "pages/about/about_me",
+    "pages/setting/setting"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -40,5 +41,6 @@
         "text": "我的"
       }
     ]
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

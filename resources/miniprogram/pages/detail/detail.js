@@ -1,5 +1,5 @@
 /**
-  待解决：
+  待解决： 
   1. 【解决】文章标题、首图、标签还未展示
   2. 【解决】wxParse代码部分没有换行
   3. 【解决】wxParse图片没有居中且自适应
@@ -54,11 +54,11 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
 
     let that = this;
     // 1.授权验证
-    app.checkUserInfo(function(userInfo, isLogin) {
+    app.checkUserInfo(function (userInfo, isLogin) {
       if (!isLogin) {
         /**wx.redirectTo({
           url: '../authorization/authorization?backType=' + blogId
@@ -77,7 +77,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
       iconColock: "clock"
     })
     // 3.更新浏览量
-    wxApi.upsertPostsStatistics([blogId, 1, 0, 0]).then(res => {})
+    wxApi.upsertPostsStatistics([blogId, 1, 0, 0]).then(res => { })
     // 4.文章详情初始化
     that.getData(blogId);
     // 5.收藏状态初始化
@@ -88,7 +88,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 底部触发加载评论
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
     var that = this;
     if (that.data.isLastCommentPage) {
       return;
@@ -127,12 +127,33 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 发送按钮提交
    */
-  formSubmit: function(e) {
+  formSubmit: function (e) {
+
+    wx.showLoading({
+      title: '评论提交中',
+    })
+
     var that = this
     var comment = e.detail.value.inputComment;
-    if (comment ||comment.length === 0) {
+    
+    //优先保存formId
+    console.info(e.detail.formId)
+    if (e.detail != undefined && e.detail.formId != undefined) {
+      var data = {
+        formId: e.detail.formId,
+        author: 0,
+        timestamp: new Date().getTime()
+      }
+      wxApi.insertFormIds(data).then(res => {
+        console.info(res)
+      })
+    }
+
+    if (comment == undefined || comment.length == 0) {
+      wx.hideLoading()
       return
     }
+
     var commentId = that.data.commentId
     var toName = that.data.toName
     var toOpenId = that.data.toOpenId
@@ -149,9 +170,20 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
       }
       wxApi.insertPostsCommonts(data).then(res => {
         console.info(res)
+        wx.hideLoading()
         that.showZanToast('评论已提交');
         return wxApi.upsertPostsStatistics([that.data.post.id, 0, 1, 0])
       }).then(res => {
+
+        //通知作者
+        var noticeData={
+          action:"sendTemplateMessage",
+          nickName:app.globalData.userInfo.nickName,
+          message:comment,
+          blogId:that.data.post.id,
+          tOpenId:""
+        }
+        wxApi.push_notice(noticeData).then(res=>{console.info(res)})
 
         var post = that.data.post
         post.comment_count = post.comment_count + 1;
@@ -207,6 +239,16 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
         return wxApi.upsertPostsStatistics([that.data.post.id, 0, 1, 0])
       }).then(res => {
 
+        var noticeData={
+          action:"sendTemplateMessage",
+          nickName:app.globalData.userInfo.nickName,
+          message:comment,
+          blogId:that.data.post.id,
+          tOpenId:toOpenId
+        }
+        console.info(noticeData)
+        wxApi.push_notice(noticeData).then(res=>{console.info(res)})
+
         var post = that.data.post
         post.comment_count = post.comment_count + 1;
 
@@ -246,7 +288,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 点击评论内容回复
    */
-  focusComment: function(e) {
+  focusComment: function (e) {
     var that = this;
     var name = e.currentTarget.dataset.name;
     var commentId = e.currentTarget.dataset.id;
@@ -264,7 +306,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 聚焦时触发
    */
-  onRepleyFocus: function(e) {
+  onRepleyFocus: function (e) {
     var self = this;
     isFocusing = false;
     if (!self.data.focus) {
@@ -276,7 +318,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 失去焦点时默认给文章评论
    */
-  onReplyBlur: function(e) {
+  onReplyBlur: function (e) {
     var self = this;
     if (!isFocusing) {
       {
@@ -296,7 +338,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: this.data.post.title,
       path: '/pages/detail/detail?blogId=' + this.data.post.id
@@ -305,7 +347,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 图片加载失败给到默认图片
    */
-  errorloadImage: function(e) {
+  errorloadImage: function (e) {
     if (e.type == "error") {
       var post = this.data.post
       post.slug = this.data.defaultImageUrl
@@ -317,7 +359,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 返回
    */
-  navigateBack: function(e) {
+  navigateBack: function (e) {
     wx.switchTab({
       url: '../index/index'
     })
@@ -325,7 +367,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 收藏
    */
-  collection: function(e) {
+  collection: function (e) {
     let that = this;
     var postsCollected = wx.getStorageSync('posts_Collected');
     var postCollected = postsCollected[that.data.post.id];
@@ -366,7 +408,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 生成图片海报
    */
-  bulidImage: function(e) {
+  bulidImage: function (e) {
     /**this.showZanDialog({
       content: '程序员有点懒，该功能还未开发'
     }).then(() => {
@@ -424,7 +466,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    *  喜欢按钮操作
    */
-  clickLike: function(e) {
+  clickLike: function (e) {
     let that = this
     var postsLiked = wx.getStorageSync('posts_Liked');
     var postLiked = postsLiked[that.data.post.id];
@@ -436,13 +478,13 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
       liked: postLiked
     })
     if (postLiked) {
-      wxApi.upsertPostsStatistics([that.data.post.id, 0, 0, 1]).then(res => {})
+      wxApi.upsertPostsStatistics([that.data.post.id, 0, 0, 1]).then(res => { })
     }
   },
   /**
    * 打赏
    */
-  reward: function(e) {
+  reward: function (e) {
     this.showZanDialog({
       content: '您的分享与关注是对我最大的打赏！'
     }).then(() => {
@@ -452,7 +494,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 获取文章数据
    */
-  getData: function(blogId) {
+  getData: function (blogId) {
     let that = this;
     var query = {
       blogId: blogId
@@ -484,7 +526,6 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
         });
 
       })
-
       WxParse.wxParse('article', 'html', post.html, that, 5);
 
       //最近浏览
@@ -494,7 +535,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 获取文章收藏状态
    */
-  getPostsCollected: function(blogId) {
+  getPostsCollected: function (blogId) {
     let that = this;
     var postsCollected = wx.getStorageSync('posts_Collected');
     if (postsCollected) {
@@ -512,7 +553,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 获取文章喜欢状态
    */
-  getPostsLiked: function(blogId) {
+  getPostsLiked: function (blogId) {
     let that = this;
     var postsLiked = wx.getStorageSync('posts_Liked');
     if (postsLiked) {
@@ -530,7 +571,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 处理最近浏览
    */
-  operatePostsRecent: function(post, recentUrl) {
+  operatePostsRecent: function (post, recentUrl) {
     var postsRecent = wx.getStorageSync('posts_Recent');
     var content = {};
     content['imageUrl'] = recentUrl;
@@ -555,7 +596,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 是否显示功能菜单
    */
-  showHideMenu: function() {
+  showHideMenu: function () {
     this.setData({
       isShow: !this.data.isShow,
       isLoad: false,
@@ -565,7 +606,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 非评论区隐藏菜单
    */
-  hiddenMenubox: function() {
+  hiddenMenubox: function () {
     this.setData({
       isShow: false,
       menuBackgroup: false
@@ -575,7 +616,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 授权登录
    */
-  bindGetUserInfo: function(e) {
+  bindGetUserInfo: function (e) {
     if (e.detail.userInfo) {
       app.globalData.userInfo = e.detail.userInfo
       this.setData({
@@ -591,7 +632,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 利用画布生成海报
    */
-  createPosterWithCanvas: function(postImageLocal, qrcodeLoal, title, custom_excerpt) {
+  createPosterWithCanvas: function (postImageLocal, qrcodeLoal, title, custom_excerpt) {
     var that = this;
 
     var context = wx.createCanvasContext('mycanvas');
@@ -628,10 +669,10 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
 
     context.draw();
 
-    setTimeout(function() {
+    setTimeout(function () {
       wx.canvasToTempFilePath({
         canvasId: 'mycanvas',
-        success: function(res) {
+        success: function (res) {
           var tempFilePath = res.tempFilePath;
           wx.hideLoading();
           console.log("海报图片路径：" + res.tempFilePath);
@@ -640,7 +681,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
             showPosterImage: res.tempFilePath
           })
         },
-        fail: function(res) {
+        fail: function (res) {
           console.log(res);
         }
       });
@@ -650,7 +691,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 取消保存海报图片
    */
-  cacenlPosterImage: function() {
+  cacenlPosterImage: function () {
     this.setData({
       showPosterPopup: false
     })
@@ -658,7 +699,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
   /**
    * 保存海报图片
    */
-  savePosterImage: function() {
+  savePosterImage: function () {
     let that = this
     wx.saveImageToPhotosAlbum({
       filePath: that.data.showPosterImage,
@@ -668,14 +709,14 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
           title: '提示',
           content: '二维码海报已存入手机相册，赶快分享到朋友圈吧',
           showCancel: false,
-          success: function(res) {
+          success: function (res) {
             that.setData({
               showPosterPopup: false
             })
           }
         })
       },
-      fail: function(err) {
+      fail: function (err) {
         console.log(err);
         if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
           console.log("再次发起授权");
@@ -683,7 +724,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
             title: '用户未授权',
             content: '如需保存海报图片到相册，需获取授权.是否在授权管理中选中“保存到相册”?',
             showCancel: true,
-            success: function(res) {
+            success: function (res) {
               if (res.confirm) {
                 console.log('用户点击确定')
                 wx.openSetting({
@@ -709,7 +750,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
       }
     });
   },
-  posterImageClick: function(e) {
+  posterImageClick: function (e) {
     wx.previewImage({
       urls: [this.data.showPosterImage],
     });

@@ -1,13 +1,14 @@
 //index.js
 //获取应用实例
 const app = getApp()
+const wxApi = require('../../utils/wxApi.js');
 
 Page({
   data: {
     userInfo: {},
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    showPopup: false
-
+    showPopup: false,
+    isAuthor:false
   },
   //事件处理函数
   bindViewTap: function() {
@@ -35,6 +36,11 @@ Page({
       url: '../about/about_wechat'
     })
   },
+  showFormId: function () {
+    wx.navigateTo({
+      url: '../setting/setting'
+    })
+  },
 
   onLoad: function() {
     let that = this;
@@ -50,6 +56,12 @@ Page({
       }
     });
 
+    wxApi.check_author().then(res => { 
+      console.info(res.result)
+      that.setData({
+        isAuthor: res.result
+      });
+    })
 
   },
   bindGetUserInfo: function(e) {

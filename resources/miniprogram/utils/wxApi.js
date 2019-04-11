@@ -65,6 +65,42 @@ function insertPostsCommonts(data){
 }
 
 /**
+ *
+ */
+function insertFormIds(data) {
+  return db.collection('openid_formids').add({
+    data: data
+  })
+}
+
+/**
+ * 
+ */
+function push_notice(data)
+{
+  var callcloudFunction = wxPromisify(wx.cloud.callFunction)
+  return callcloudFunction({
+    name: 'openapi',
+    data:data
+  })
+}
+
+/**
+ * 
+ */
+function check_author()
+{
+  var noticeData={
+    action:"checkAuthor"
+  }
+  var callcloudFunction = wxPromisify(wx.cloud.callFunction)
+  return callcloudFunction({
+    name: 'openapi',
+    data:noticeData
+  })
+}
+
+/**
  * 新增子评论
  */
 function pushChildrenCommonts(id,data){
@@ -141,8 +177,10 @@ module.exports = {
   insertPostsCommonts: insertPostsCommonts,
   getPostsCommonts: getPostsCommonts,
   pushChildrenCommonts: pushChildrenCommonts,
-  getPostsQrcode: getPostsQrcode,
   getDownloadFile: getDownloadFile,
   getImageInfo: getImageInfo,
-  getCloudFile: getCloudFile
+  getCloudFile: getCloudFile,
+  insertFormIds: insertFormIds,
+  push_notice:push_notice,
+  check_author:check_author
 }

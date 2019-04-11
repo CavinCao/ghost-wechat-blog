@@ -100,7 +100,7 @@
       <view class="comment-respond">
         <view class="comment-box">
           <view class="zan-icon zan-icon-wap-home zan-font-20 icon-home" catchtap='navigateBack'> </view>
-          <input class="comment-input" type='text' confirm-type="send" cursor-spacing="10" maxlength="100" name="inputComment" value="{{commentContent}}" placeholder="{{placeholder}}" focus="{{focus}}" bindblur="onReplyBlur" bindfocus="onRepleyFocus" bindconfirm="formSubmit"
+          <input class="comment-input" bindconfirm="formSubmit" type='text' confirm-type="send" cursor-spacing="10" maxlength="100" name="inputComment" value="{{commentContent}}" placeholder="{{placeholder}}" focus="{{focus}}" bindblur="onReplyBlur" bindfocus="onRepleyFocus" 
           />
           <button class="comment-button touch-active" formType="submit">发送</button>
           <view class="zan-icon zan-icon-add-o zan-font-20 icon-add" catchtap='showHideMenu'> </view>

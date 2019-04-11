@@ -15,6 +15,9 @@
 	"appid": "wx7bc4f5f53c86b1e3",
 	"projectname": "ghost_wechat_blog",
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"condition": {
 		"search": {
 			"current": -1,

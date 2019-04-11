@@ -1,0 +1,27 @@
+<import src="/dist/field/index.wxml" />
+<view class="zan-panel-title">后台基本信息</view>
+<view class="zan-panel">
+  <view class="zan-cell">
+    <view class="zan-cell__bd">可用FormID数量：</view>
+    <view class="zan-cell__ft">
+      <view class="zan-tag zan-tag--primary">100</view>
+    </view>
+  </view>
+  <view class="zan-cell">
+    <view class="zan-cell__bd">过期的FormID数量</view>
+    <view class="zan-cell__ft">
+      <view class="zan-tag zan-tag--danger">100</view>
+    </view>
+  </view>
+  <view class="zan-cell">
+    <view class="zan-cell__bd">本次生成FormID</view>
+    <view class="zan-cell__ft">
+        <button class="zan-btn zan-btn--mini zan-btn--primary">保存FormID</button>
+    </view>
+  </view>
+</view>
+<form bindsubmit="formSubmit" report-submit="true">
+  <button formType="submit" class='btn'>
+    <view class='u-publish-btn' bindtap='uploadFormId'>生成FormID</view>
+  </button>
+</form>

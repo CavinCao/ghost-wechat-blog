@@ -61,6 +61,44 @@ wx.getUserInfo官方文档中做了一些调整,授权方式做了下调整，�
 
 相信总有一天，量变总会达到质变。
 
+## 其他
+
+补充下利用小程序云开发的数据库的结构：
+
+- posts_statistics（记录文章的点评，喜欢数量）
+
+```
+
+"_id": W5y6i7orBK9ufeyD
+//点评数量
+"comment_count": 8
+//喜欢数量
+"like_count": 14
+//文章id
+"post_id": 5b3de6b464546644ae0b7eb4
+//访问数量
+"view_count": 231
+
+```
+
+- posts_comments (文章点评记录表)
+
+```
+"_id": W69AgvD0YIt7pc32
+"_openid": ''
+"cAvatarUrl": ''//头像
+"cNickName": ''//昵称
+"childComment"://子评论
+	[
+		{"cAvatarUrl":"","cNickName":"","cOpenId":"","comment":"","createDate":"2018-10-17","flag":0,"tNickName":"","tOpenId":"","timestamp":1539706875589}
+	]
+"comment": ''
+"createDate": 2018-09-29
+"flag": 0
+"postId": 5ba057e864546644ae0b7ee5
+"timestamp": 1538211970612
+```
+
 最后贴下自己的小程序二维码：
 
 ![image](http://image.bug2048.com/gh_e63f2dcd02ee_258.jpg)
