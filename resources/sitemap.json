@@ -1,8 +1,8 @@
 {
   "rules": [
     {
-      "action": "allow",
-      "page": "*"
+      "action": "disallow",
+      "page": "pages/setting/setting"
     }
   ]
 }
