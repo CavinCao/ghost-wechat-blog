@@ -55,7 +55,6 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
     let that = this;
     // 1.授权验证
     app.checkUserInfo(function (userInfo, isLogin) {
@@ -235,6 +234,7 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
       console.info(childData)
       wxApi.pushChildrenCommonts(commentId, childData).then(res => {
         console.info(res)
+        wx.hideLoading()
         that.showZanToast('评论已提交');
         return wxApi.upsertPostsStatistics([that.data.post.id, 0, 1, 0])
       }).then(res => {

@@ -65,7 +65,7 @@ function insertPostsCommonts(data){
 }
 
 /**
- *
+ * 新增formids
  */
 function insertFormIds(data) {
   return db.collection('openid_formids').add({
@@ -92,6 +92,18 @@ function check_author()
 {
   var noticeData={
     action:"checkAuthor"
+  }
+  var callcloudFunction = wxPromisify(wx.cloud.callFunction)
+  return callcloudFunction({
+    name: 'openapi',
+    data:noticeData
+  })
+}
+
+function query_formIds()
+{
+  var noticeData={
+    action:"queryFormIds"
   }
   var callcloudFunction = wxPromisify(wx.cloud.callFunction)
   return callcloudFunction({
@@ -182,5 +194,6 @@ module.exports = {
   getCloudFile: getCloudFile,
   insertFormIds: insertFormIds,
   push_notice:push_notice,
-  check_author:check_author
+  check_author:check_author,
+  query_formIds:query_formIds
 }
