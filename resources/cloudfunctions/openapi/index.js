@@ -99,6 +99,7 @@ async function sendTemplateMessage(event) {
   }
   touser = openIdformIds.data[0]['_openid']
   form_id = openIdformIds.data[0]['formId']
+  console.info("openId:"+touser+";formId:"+form_id)
 
   const removeResult = await db.collection('openid_formids').doc(openIdformIds.data[0]['_id']).remove()
   console.info(event.nickName + ":" + event.message)
