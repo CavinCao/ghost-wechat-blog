@@ -1,3 +1,5 @@
+若没有ghsot博客的，可以参考基于云开发的博客小程序，开源地址：[https://github.com/CavinCao/mini-blog](https://www.bug2048.com/wechat20190411/)
+
 #### 2019-04-13更新
 1. 评论通知功能实现
 2. 已知问题修复
