@@ -1,3 +1,7 @@
+## 友情提醒
+本小程序后端依赖`ghost`开源博客框架，若没有ghost博客的，可以参考基于云开发的博客小程序「无需后端」，开源地址：[https://github.com/CavinCao/mini-blog](https://github.com/CavinCao/mini-blog)
+
+## 更新记录
 #### 2019-04-13更新
 1. 评论通知功能实现
 2. 已知问题修复
