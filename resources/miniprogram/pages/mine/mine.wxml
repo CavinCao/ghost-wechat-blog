@@ -33,6 +33,11 @@
     <view class="zan-cell__bd">关于Bug生活2048</view>
     <view class="zan-cell__ft"></view>
   </view>
+  <view class="zan-cell zan-cell--access" bindtap="showMiniBlog">
+    <view class="zan-cell__hd"></view>
+    <view class="zan-cell__bd">我si程序员</view>
+    <view class="zan-cell__ft"></view>
+  </view>
   <view wx:if="{{isAuthor}}">
     <view class="zan-cell zan-cell--access" bindtap="showFormId">
       <view class="zan-cell__hd"></view>

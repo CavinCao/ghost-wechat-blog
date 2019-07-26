@@ -87,4 +87,19 @@ Page({
       url: '../index/index'
     })
   },
+  /**
+   * 跳转新小程序
+   */
+  showMiniBlog: function(e){
+    wx.navigateToMiniProgram({
+      appId: 'wx5642e868dfc28bb0',
+      path: 'pages/index/index',
+      extraData: {
+      },
+      envVersion: 'release',
+      success(res) {
+        // 打开成功
+      }
+    })
+  }
 })

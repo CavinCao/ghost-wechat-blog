@@ -11,7 +11,7 @@
 		"nodeModules": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.3.0",
+	"libVersion": "2.6.6",
 	"appid": "wx7bc4f5f53c86b1e3",
 	"projectname": "ghost_wechat_blog",
 	"isGameTourist": false,

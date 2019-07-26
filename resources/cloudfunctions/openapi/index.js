@@ -1,6 +1,5 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-const dateUtils = require('date-utils')
 
 cloud.init()
 

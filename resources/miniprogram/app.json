@@ -16,6 +16,9 @@
     "navigationBarTitleText": "Bug生活2048",
     "navigationBarTextStyle": "black"
   },
+  "navigateToMiniProgramAppIdList": [
+    "wx5642e868dfc28bb0"
+  ],
   "tabBar": {
     "color": "#959394",
     "selectedColor": "#959394",

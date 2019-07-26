@@ -68,6 +68,14 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
         return;
       }
     })
+
+    let interstitialAd = null
+    if (wx.createInterstitialAd) {
+      interstitialAd = wx.createInterstitialAd({
+        adUnitId: 'adunit-fea8d765572d73c7'
+      })
+    }
+
     // 2.默认值初始化
     let blogId = options.blogId;
     that.setData({
@@ -83,6 +91,13 @@ Page(Object.assign({}, Zan.Toast, Zan.Dialog, {
     that.getPostsCollected(blogId);
     // 6.初始化喜欢状态
     that.getPostsLiked(blogId);
+
+    // 在适合的场景显示插屏广告
+    if (interstitialAd) {
+      interstitialAd.show().catch((err) => {
+        console.error(err)
+      })
+    }
   },
   /**
    * 底部触发加载评论
